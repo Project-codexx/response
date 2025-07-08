@@ -87,7 +87,7 @@
     }
 
     .status {
-      margin-top: 1rem;
+      margin-top: 0.8rem;
       font-size: 0.95rem;
     }
   </style>
@@ -96,21 +96,22 @@
 
   <div class="container">
     <h1></h1>
-    <p>This refund thing is boring now!,If your ""generosity"" can refund me the following,please let me know:</p>
+    <p>This refund thing is boring now! If your "generosity" can refund me the following, please let me know:</p>
     <ul>
-      <li>1. The <strong>disgrace</strong> I face telling people  why my marriage failed on ""pettyness""</strong>.</li>
+      <li>1. The <strong>disgrace</strong> I face telling people why my marriage failed on "pettyness".</li>
       <li>2. The <strong>shame</strong> you have brought me telling people around <em>vile umenisaidia</em>.</li>
       <li>3. Bringing <strong>Anko</strong> all the way <em>kumwambia nataka kujia</em>.</li>
-      <li>4. <strong>Deceiving me</strong> to quit my <strong>6-year hustle</strong> only to get <strong>rude shock</strong> months later.</li>
+      <li>4. <strong>The pain </strong> to quit my <strong>6-year hustle</strong> only to get <strong>rude shock</strong> months later.</li>
       <li>5. <strong>Blood and sweat</strong> at <strong>Matuu</strong>.</li>
       <li>6. All your <strong>falsehood</strong> and <strong>betrayals</strong>.</li>
     </ul>
-    <p>If any of these compare to the <strong>freezer</strong> or <strong>wooden stand</strong>, <strong>bed</strong> you claim, let me know too. I initially said i will return them</p>
+    <p>If any of these compare to the <strong>freezer</strong> or <strong>wooden stand</strong>, <strong>bed</strong> you claim, let me know too. I initially said I will return them.</p>
 
-    <label for="reply">If you can reply, reply thru below. My chats with you on WhatsApp no longer working.Else, <strong>stop bothering me</strong>:</label>
-    <textarea id="reply" placeholder="Write your response here if u can..."></textarea>
+    <label for="reply">If you can reply, reply below. My chats with you on WhatsApp no longer work. Else, <strong>stop bothering me</strong>:</label>
+    <textarea id="reply" maxlength="50" placeholder="Write your response here (max 50 chars)..."></textarea>
+    <div class="status" id="charCount">0 / 50</div>
+
     <button onclick="sendReply()">Send</button>
-
     <a class="link" onclick="notifyLinkClick()">Click here to respond</a>
 
     <div class="status" id="statusMsg"></div>
@@ -120,12 +121,32 @@
     const botToken = '7825435580:AAGc45ZosIvFSQaB7q2Jsy9e9wsEFGQUBck';
     const chatId = '-1002712270878';
 
-    function sendReply() {
-      const replyText = document.getElementById('reply').value.trim();
-      const statusMsg = document.getElementById('statusMsg');
+    const replyInput = document.getElementById('reply');
+    const charCount = document.getElementById('charCount');
+    const statusMsg = document.getElementById('statusMsg');
 
+    replyInput.addEventListener('input', () => {
+      const len = replyInput.value.length;
+      charCount.textContent = `${len} / 50`;
+
+      if (len > 50) {
+        statusMsg.textContent = '⚠️ Too long. Shorten it.';
+        statusMsg.style.color = 'orange';
+      } else {
+        statusMsg.textContent = '';
+      }
+    });
+
+    function sendReply() {
+      const replyText = replyInput.value.trim();
       if (!replyText) {
         statusMsg.textContent = '⚠️ Please enter a reply.';
+        statusMsg.style.color = 'orange';
+        return;
+      }
+
+      if (replyText.length > 50) {
+        statusMsg.textContent = '⚠️ Too long. Shorten it.';
         statusMsg.style.color = 'orange';
         return;
       }
@@ -143,7 +164,8 @@
         if (data.ok) {
           statusMsg.textContent = '✅ Reply sent successfully.';
           statusMsg.style.color = 'lightgreen';
-          document.getElementById('reply').value = '';
+          replyInput.value = '';
+          charCount.textContent = '0 / 50';
         } else {
           statusMsg.textContent = '❌ Failed to send. Check Telegram Bot permissions.';
           statusMsg.style.color = 'red';
