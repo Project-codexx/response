@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Re</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      background: #0e1117;
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem;
+    }
+
+    h1 {
+      color: #58a6ff;
+      margin-bottom: 1rem;
+    }
+
+    .container {
+      max-width: 700px;
+      width: 100%;
+      background: #161b22;
+      border-radius: 12px;
+      box-shadow: 0 0 12px rgba(0,0,0,0.4);
+      padding: 2rem;
+    }
+
+    ul {
+      padding-left: 1.2rem;
+    }
+
+    li {
+      margin-bottom: 0.8rem;
+      line-height: 1.6;
+    }
+
+    strong {
+      color: #ff7b72;
+    }
+
+    em {
+      color: #f2cc60;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 120px;
+      padding: 1rem;
+      background: #0d1117;
+      border: 1px solid #30363d;
+      border-radius: 10px;
+      color: #fff;
+      font-size: 1rem;
+      margin-top: 1rem;
+      resize: vertical;
+    }
+
+    button {
+      background: #238636;
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      margin-top: 1rem;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #2ea043;
+    }
+
+    .link {
+      color: #58a6ff;
+      margin-top: 1.5rem;
+      display: inline-block;
+      cursor: pointer;
+    }
+
+    .link:hover {
+      text-decoration: underline;
+    }
+
+    .status {
+      margin-top: 1rem;
+      font-size: 0.95rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1></h1>
+    <p>This refund thing is boring now!,If your ""generosity"" can refund me the following,please let me know:</p>
+    <ul>
+      <li>1. The <strong>disgrace</strong> I face telling people  why my marriage failed on ""pettyness""</strong>.</li>
+      <li>2. The <strong>shame</strong> you have brought me telling people around <em>vile umenisaidia</em>.</li>
+      <li>3. Bringing <strong>Anko</strong> all the way <em>kumwambia nataka kujia</em>.</li>
+      <li>4. <strong>Deceiving me</strong> to quit my <strong>6-year hustle</strong> only to get <strong>rude shock</strong> months later.</li>
+      <li>5. <strong>Blood and sweat</strong> at <strong>Matuu</strong>.</li>
+      <li>6. All your <strong>falsehood</strong> and <strong>betrayals</strong>.</li>
+    </ul>
+    <p>If any of these compare to the <strong>freezer</strong> or <strong>wooden stand</strong>, <strong>bed</strong> you claim, let me know too. I initially said i will return them</p>
+
+    <label for="reply">If you can reply, reply thru below. My chats with you on WhatsApp no longer working.Else, <strong>stop bothering me</strong>:</label>
+    <textarea id="reply" placeholder="Write your response here if u can..."></textarea>
+    <button onclick="sendReply()">Send</button>
+
+    <a class="link" onclick="notifyLinkClick()">Click here to respond</a>
+
+    <div class="status" id="statusMsg"></div>
+  </div>
+
+  <script>
+    const botToken = '7825435580:AAGc45ZosIvFSQaB7q2Jsy9e9wsEFGQUBck';
+    const chatId = '-1002712270878';
+
+    function sendReply() {
+      const replyText = document.getElementById('reply').value.trim();
+      const statusMsg = document.getElementById('statusMsg');
+
+      if (!replyText) {
+        statusMsg.textContent = '⚠️ Please enter a reply.';
+        statusMsg.style.color = 'orange';
+        return;
+      }
+
+      fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          chat_id: chatId,
+          text: `📩 New Regret Reply:\n\n${replyText}`
+        })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.ok) {
+          statusMsg.textContent = '✅ Reply sent successfully.';
+          statusMsg.style.color = 'lightgreen';
+          document.getElementById('reply').value = '';
+        } else {
+          statusMsg.textContent = '❌ Failed to send. Check Telegram Bot permissions.';
+          statusMsg.style.color = 'red';
+        }
+      })
+      .catch(() => {
+        statusMsg.textContent = '❌ Network error.';
+        statusMsg.style.color = 'red';
+      });
+    }
+
+    function notifyLinkClick() {
+      fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          chat_id: chatId,
+          text: '🔔 Someone clicked the response link.'
+        })
+      })
+      .then(() => alert('Click registered.'))
+      .catch(() => alert('Failed to notify on click.'));
+    }
+  </script>
+
+</body>
+</html>
